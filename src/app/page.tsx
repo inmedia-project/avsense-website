@@ -94,7 +94,16 @@ export default function Home() {
           </div>
           <div className="reveal relative">
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-lift">
-              <Image src="/images/work/awards-night.webp" alt="Awards night stage with LED screens, beams and a red carpet" fill sizes="(min-width:1024px) 600px, 100vw" className="object-cover" />
+              <video
+                src="/video/awards-stage.mp4"
+                poster="/video/awards-stage-poster.webp"
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-label="Awards night stage with sweeping beams, LED screens and a red carpet"
+                className="absolute inset-0 size-full object-cover"
+              />
             </div>
             <div className="absolute -bottom-6 -left-4 hidden w-56 overflow-hidden rounded-2xl border-4 border-white shadow-lift sm:block">
               <div className="relative aspect-[4/3]">
