@@ -28,7 +28,9 @@ export function waLink(message: string) {
 
 export const nav = [
   { href: "/services/", label: "Services" },
-  { href: "/#work", label: "Our work" },
+  { href: "/work/", label: "Our work" },
+  { href: "/clients/", label: "Our clients" },
+  { href: "/blog/", label: "Blog" },
   { href: "/about/", label: "About us" },
   { href: "/contact/", label: "Contact us" },
 ];
@@ -218,22 +220,28 @@ export const gallery = [
   { src: "/images/work/canopy-8.webp", alt: "Banquet hall set for a large event" },
 ];
 
-export const clients = ["Amway", "Herbalife Nutrition", "Etiqa Takaful", "Angkasa"];
+// Logos from Wikimedia Commons / the organisation's own site, in public/images/clients.
+export const clients = [
+  { name: "Amway", logo: "/images/clients/amway.png" },
+  { name: "Herbalife Nutrition", logo: "/images/clients/herbalife.png" },
+  { name: "Etiqa Takaful", logo: "/images/clients/etiqa.png" },
+  { name: "Angkasa", logo: "/images/clients/angkasa-mark.png" },
+];
 
 export const contractorFor = [
-  { name: "MARA", full: "Majlis Amanah Rakyat" },
-  { name: "MPOB", full: "Malaysian Palm Oil Board" },
-  { name: "UPM", full: "Universiti Putra Malaysia" },
-  { name: "RISDA", full: "Rubber Industry Smallholders Development Authority" },
-  { name: "BSN", full: "Bank Simpanan Nasional" },
-  { name: "Bank Muamalat", full: "Bank Muamalat Malaysia" },
-  { name: "UNIMAS", full: "Universiti Malaysia Sarawak" },
-  { name: "MARDI", full: "Malaysian Agricultural Research & Development Institute" },
-  { name: "GMI", full: "German Malaysian Institute" },
-  { name: "UMP", full: "Universiti Malaysia Pahang" },
-  { name: "IIUM", full: "International Islamic University Malaysia" },
-  { name: "PERKESO", full: "Pertubuhan Keselamatan Sosial" },
-  { name: "UPM Holdings", full: "Wholly owned by Universiti Putra Malaysia" },
+  { name: "MARA", full: "Majlis Amanah Rakyat", logo: "/images/clients/mara.png" },
+  { name: "MPOB", full: "Malaysian Palm Oil Board", logo: "/images/clients/mpob.png" },
+  { name: "UPM", full: "Universiti Putra Malaysia", logo: "/images/clients/upm.png" },
+  { name: "RISDA", full: "Rubber Industry Smallholders Development Authority", logo: "/images/clients/risda.png" },
+  { name: "BSN", full: "Bank Simpanan Nasional", logo: "/images/clients/bsn.png" },
+  { name: "Bank Muamalat", full: "Bank Muamalat Malaysia", logo: "/images/clients/muamalat.png" },
+  { name: "UNIMAS", full: "Universiti Malaysia Sarawak", logo: "/images/clients/unimas.png" },
+  { name: "MARDI", full: "Malaysian Agricultural Research & Development Institute", logo: "/images/clients/mardi.png" },
+  { name: "GMI", full: "German Malaysian Institute", logo: "" },
+  { name: "UMP", full: "Universiti Malaysia Pahang", logo: "/images/clients/ump.png" },
+  { name: "IIUM", full: "International Islamic University Malaysia", logo: "/images/clients/iium.png" },
+  { name: "PERKESO", full: "Pertubuhan Keselamatan Sosial", logo: "/images/clients/perkeso.png" },
+  { name: "UPM Holdings", full: "Wholly owned by Universiti Putra Malaysia", logo: "/images/clients/upm.png" },
 ];
 
 export const team = [
@@ -283,12 +291,12 @@ export const faqs = [
 
 export const wizard = {
   eventTypes: [
-    { value: "Corporate dinner / awards", hint: "Annual dinner, gala, awards night" },
-    { value: "Conference / seminar", hint: "Training, summit, AGM" },
-    { value: "Product launch", hint: "Launch, roadshow, exhibition" },
-    { value: "Concert / show", hint: "Live performance, festival" },
-    { value: "Wedding / private event", hint: "Wedding, party, celebration" },
-    { value: "Not sure yet", hint: "Let's talk it through" },
+    { value: "Corporate dinner / awards", hint: "Annual dinner, gala, awards night", image: "/images/work/awards-night.webp" },
+    { value: "Conference / seminar", hint: "Training, summit, AGM", image: "/images/work/led-wall-1.webp" },
+    { value: "Product launch", hint: "Launch, roadshow, exhibition", image: "/images/work/awards-entrance.webp" },
+    { value: "Concert / show", hint: "Live performance, festival", image: "/images/work/concert-led.webp" },
+    { value: "Wedding / private event", hint: "Wedding, party, celebration", image: "/images/work/stage-dancers.webp" },
+    { value: "Not sure yet", hint: "Let's talk it through", image: "/images/work/efx-sparkular.webp" },
   ],
   needs: [
     "LED wall",
@@ -299,5 +307,37 @@ export const wizard = {
     "Special effects",
     "Full event production",
   ],
+  // Photo shown on the brief preview's polaroid when a need is picked.
+  needImages: {
+    "LED wall": "/images/work/led-wall-2.webp",
+    "Sound & lighting": "/images/work/stage-dancers.webp",
+    "Multi-camera / live stream": "/images/work/camera-crew.webp",
+    "Video production": "/images/work/greenscreen-interview.webp",
+    "Stage & canopy": "/images/work/canopy-1.webp",
+    "Special effects": "/images/work/efx-confetti.webp",
+    "Full event production": "/images/work/control-room.webp",
+  } as Record<string, string>,
   guests: ["Under 100", "100 – 300", "300 – 1,000", "1,000+", "Not sure"],
+};
+
+// LED screen estimator on the home page. Pricing follows the ledscreens.my
+// estimator (Klang Valley, single day): RM 60 per m² of P2.5 LED, plus
+// RM 1,400 transport and RM 2,650 crew for the first day, plus a 3ft riser at
+// RM 100 per metre of screen width. Swap in AV Sense's own rates when confirmed.
+const LED_RATE_PER_SQM = 60;
+const LED_BASE = 1400 + 2650;
+const LED_RISER_PER_M = 100;
+const ledPrice = (w: number, h: number) => w * h * LED_RATE_PER_SQM + LED_BASE + w * LED_RISER_PER_M;
+
+export const ledEstimator = {
+  sizes: [
+    { w: 3, h: 2, recommended: false },
+    { w: 4, h: 2.5, recommended: false },
+    { w: 5, h: 3, recommended: true },
+    { w: 6, h: 3.5, recommended: false },
+    { w: 7, h: 4, recommended: false },
+  ].map((z) => ({ ...z, price: ledPrice(z.w, z.h) as number | null })),
+  note: "Single-day rental in the Klang Valley. Outside the Klang Valley, extra days and add-ons are quoted on request.",
+  // From the "Rent the gear" and "We run the tech" routes above.
+  included: ["LED screen panels", "Video processing", "3ft screen riser", "Delivery & installation", "Operator on the day", "Teardown after the show"],
 };

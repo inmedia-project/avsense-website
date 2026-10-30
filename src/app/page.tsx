@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
+import ClientLogos from "@/components/ClientLogos";
+import CompanyVideo from "@/components/CompanyVideo";
 import CountUp from "@/components/CountUp";
 import CtaBand from "@/components/CtaBand";
 import Faq from "@/components/Faq";
-import QuoteWizard from "@/components/QuoteWizard";
+import LedEstimator from "@/components/LedEstimator";
 import ServiceShowcase from "@/components/ServiceShowcase";
 import { WhatsAppIcon } from "@/components/WhatsAppFloat";
-import { clients, contractorFor, gallery, routes, services, waLink } from "@/content/site";
+import { contractorFor, gallery, routes, services, waLink } from "@/content/site";
 
 const years = new Date().getFullYear() - 2005;
 
@@ -15,17 +17,28 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-ink-950 text-white">
+        {/* Background: poster (server-rendered) + stage-lighting loop (Mixkit free licence). */}
         <Image
-          src="/images/work/stage-dancers.webp"
+          src="/video/hero-stage-lights-poster.jpg"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="kenburns -z-20 object-cover object-center"
+          className="-z-20 object-cover object-center"
+        />
+        <video
+          src="/video/hero-stage-lights.mp4"
+          poster="/video/hero-stage-lights-poster.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden
+          className="absolute inset-0 -z-20 size-full object-cover motion-reduce:hidden"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950 via-ink-950/80 to-ink-950/30" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent" />
-        <div className="container-x flex min-h-[38rem] flex-col justify-center py-20 lg:min-h-[42rem]">
+        <div className="container-x flex min-h-[calc(88dvh-5rem)] flex-col justify-center py-16 lg:min-h-[calc(100dvh-5rem)] lg:py-20">
           <p className="eyebrow text-orange-400">Event production & AV rental · Semenyih, Selangor</p>
           <h1 className="mt-5 max-w-3xl text-4xl leading-[1.05] font-bold sm:text-6xl">
             Stage, screen and sound for events people remember.
@@ -92,24 +105,9 @@ export default function Home() {
               →
             </p>
           </div>
-          <div className="reveal relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-lift">
-              <video
-                src="/video/awards-stage.mp4"
-                poster="/video/awards-stage-poster.webp"
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-label="Awards night stage with sweeping beams, LED screens and a red carpet"
-                className="absolute inset-0 size-full object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-6 -left-4 hidden w-56 overflow-hidden rounded-2xl border-4 border-white shadow-lift sm:block">
-              <div className="relative aspect-[4/3]">
-                <Image src="/images/work/control-room.webp" alt="Live vision mixing in the control room" fill sizes="224px" className="object-cover" />
-              </div>
-            </div>
+          <div className="reveal">
+            <CompanyVideo />
+            <p className="mt-4 text-sm text-muted">Every package is quoted for your venue, date and guest count.</p>
           </div>
         </div>
       </section>
@@ -123,7 +121,7 @@ export default function Home() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {routes.map((r) => (
-              <article key={r.n} className="reveal group overflow-hidden rounded-3xl border border-line bg-white transition hover:-translate-y-1 hover:shadow-lift">
+              <article key={r.n} className="reveal group relative overflow-hidden rounded-3xl border border-line bg-white transition duration-300 hover:-translate-y-1.5 hover:shadow-lift">
                 <div className="relative aspect-[16/9] overflow-hidden">
                   <Image src={r.image} alt="" fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover transition duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/20 to-transparent" />
@@ -140,43 +138,36 @@ export default function Home() {
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-muted">{r.pitch}</p>
                   <p className="eyebrow mt-6 text-muted">What we do</p>
-                  <ol className="mt-3 space-y-2.5 text-sm">
+                  {/* On hover the numbers light up one after another (1, 2, 3, 4). */}
+                  <ol className="relative mt-3 space-y-2.5 text-sm before:absolute before:top-3 before:bottom-3 before:left-3 before:w-px before:bg-line">
                     {r.steps.map((s, i) => (
-                      <li key={s} className="flex items-center gap-3">
-                        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-mist-100 text-xs font-semibold">{i + 1}</span>
+                      <li key={s} style={{ "--j": i } as React.CSSProperties} className="route-step relative flex items-center gap-3">
+                        <span className="route-step-num relative grid size-6 shrink-0 place-items-center rounded-full bg-mist-100 text-xs font-semibold">{i + 1}</span>
                         {s}
                       </li>
                     ))}
                   </ol>
                 </div>
+                {/* Accent line grows along the bottom on hover. */}
+                <span aria-hidden className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-orange-500 transition-transform duration-500 group-hover:scale-x-100" />
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Quote wizard */}
-      <section id="brief" className="relative overflow-hidden bg-mist-50 py-16 lg:py-24">
-        <div className="container-x grid items-center gap-12 lg:grid-cols-2">
-          <div className="reveal">
-            <h2 className="text-3xl font-bold sm:text-4xl">Tell us about your event.</h2>
-            <p className="mt-4 max-w-md text-lg text-muted">
-              Four quick taps: the event, what you need, guest count and date. It opens WhatsApp with everything filled
-              in, and our team replies with options.
+      {/* LED screen estimator */}
+      <section id="led-estimate" className="bg-ink-900 py-16 text-white lg:py-24">
+        <div className="container-x">
+          <div className="reveal mx-auto max-w-2xl text-center">
+            <p className="eyebrow text-orange-400">LED screen rental</p>
+            <h2 className="mt-3 text-3xl font-bold sm:text-5xl">How big should your LED screen be?</h2>
+            <p className="mt-4 text-lg text-white/70">
+              Pick a size and see it on stage, next to a person and a speaker stack, before you ask for a quote.
             </p>
-            <ul className="mt-6 flex flex-wrap gap-2 text-sm">
-              {["Takes under a minute", "No brief needed yet", "Change anything later"].map((t) => (
-                <li key={t} className="rounded-full border border-line bg-white px-3 py-1.5">
-                  <span className="text-orange-600">✓</span> {t}
-                </li>
-              ))}
-            </ul>
-            <div className="relative mt-10 hidden aspect-[16/9] max-w-md overflow-hidden rounded-3xl lg:block">
-              <Image src="/images/work/efx-sparkular.webp" alt="Cold-spark fountains on stage" fill sizes="450px" className="object-cover" />
-            </div>
           </div>
-          <div className="reveal">
-            <QuoteWizard />
+          <div className="mt-12">
+            <LedEstimator />
           </div>
         </div>
       </section>
@@ -226,37 +217,54 @@ export default function Home() {
               </figure>
             ))}
           </div>
+
+          {/* Numbers + links, all from the company profile */}
+          <div className="reveal mt-14 grid gap-10 border-t border-white/10 pt-10 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1.2fr]">
+            {[
+              { value: years, suffix: "+", label: "years of events since 2005" },
+              { value: services.length, suffix: "", label: "services run by our own crew" },
+              { value: contractorFor.length, suffix: "", label: "agencies, universities and banks we're registered to supply" },
+            ].map((n, i) => (
+              <div key={n.label} className="stat group" style={{ "--i": i } as React.CSSProperties}>
+                <p className="text-5xl font-bold transition-colors group-hover:text-orange-400">
+                  <CountUp to={n.value} />
+                  {n.suffix}
+                </p>
+                <span aria-hidden className="stat-bar mt-3 block h-0.5 w-16 origin-left bg-orange-500" />
+                <p className="mt-3 max-w-[16rem] text-white/60">{n.label}</p>
+              </div>
+            ))}
+            <div className="flex flex-col items-start gap-4 lg:pt-2">
+              <a
+                href={waLink("Hi AV Sense, I'd like to see more of your past events.")}
+                target="_blank"
+                rel="noopener"
+                className="flex items-center gap-2 font-semibold hover:text-orange-400"
+              >
+                <WhatsAppIcon className="size-5 text-[#25d366]" /> Ask for our portfolio
+              </a>
+              <Link href="/work/" className="font-semibold underline decoration-orange-500 decoration-2 underline-offset-[6px] hover:text-orange-400">
+                See all our work →
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Clients */}
       <section className="py-16 lg:py-24">
         <div className="container-x">
-          <div className="reveal grid gap-10 lg:grid-cols-[1fr_2fr]">
-            <div>
+          <div className="reveal flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div className="max-w-xl">
               <p className="eyebrow text-red-brand">Trusted by</p>
-              <h2 className="mt-3 text-3xl font-bold">Brands and institutions we've worked with</h2>
-              <p className="mt-4 text-muted">
-                Registered contractor with the Sennego system for government agencies, universities and banks.
-              </p>
+              <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Brands and institutions we&apos;ve worked with</h2>
             </div>
-            <div>
-              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {clients.map((c) => (
-                  <li key={c} className="grid h-20 place-items-center rounded-2xl bg-ink-950 px-3 text-center text-lg font-bold text-white">
-                    {c}
-                  </li>
-                ))}
-              </ul>
-              <p className="eyebrow mt-8 text-muted">Registered contractor for</p>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {contractorFor.map((c) => (
-                  <li key={c.name} title={c.full} className="rounded-full border border-line px-3.5 py-1.5 text-sm font-medium">
-                    {c.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <p className="max-w-sm text-muted">
+              Registered contractor with the Sennego system for government agencies, universities and banks.
+            </p>
+          </div>
+          <div className="reveal mt-10">
+            <ClientLogos />
           </div>
         </div>
       </section>

@@ -104,3 +104,151 @@ h3 {
     scroll-behavior: auto;
   }
 }
+
+/* Route cards: on hover the step numbers light up one after another (1, 2, 3…)
+   and each line nudges right. Touch devices and reduced motion keep the rest state. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .route-step {
+    transition: transform 300ms ease-out;
+  }
+  .route-step-num {
+    transition:
+      background-color 250ms,
+      color 250ms;
+  }
+  .group:hover .route-step {
+    transform: translateX(4px);
+    transition-delay: calc(var(--j) * 140ms);
+  }
+  .group:hover .route-step-num {
+    background: var(--color-ink-950);
+    color: #fff;
+    transition-delay: calc(var(--j) * 140ms);
+    animation: step-pop 450ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: calc(var(--j) * 140ms);
+  }
+}
+@keyframes step-pop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.25); }
+  100% { transform: none; }
+}
+
+/* Quote brief preview: pieces pop in as the visitor picks options. */
+@media (prefers-reduced-motion: no-preference) {
+  .brief-pop {
+    animation: brief-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .brief-stamp {
+    animation: brief-stamp 500ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+}
+@keyframes brief-pop {
+  0% { opacity: 0; scale: 0.7; }
+  100% { opacity: 1; scale: 1; }
+}
+@keyframes brief-stamp {
+  0% { opacity: 0; scale: 1.8; }
+  100% { opacity: 1; scale: 1; }
+}
+
+/* Services showcase: the line under the active service fills while it waits to move on. */
+.showcase-progress {
+  animation: showcase-progress linear both;
+}
+@keyframes showcase-progress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase-progress {
+    animation: none;
+    width: 2.5rem;
+  }
+}
+
+/* LED estimator: moving-head beams sweep, and the screen plays a looping colour wash. */
+.led-beam {
+  animation: led-beam 6s ease-in-out infinite alternate;
+}
+@keyframes led-beam {
+  from { transform: translateX(-50%) rotate(-22deg); }
+  to { transform: translateX(-50%) rotate(22deg); }
+}
+.led-content {
+  background: linear-gradient(120deg, #e21e26, #f7941d, #7c3aed, #0ea5e9, #e21e26);
+  background-size: 400% 400%;
+  animation: led-wash 9s linear infinite;
+}
+.led-flash {
+  animation: led-flash 500ms ease-out both;
+}
+@keyframes led-wash {
+  from { background-position: 0% 50%; }
+  to { background-position: 400% 50%; }
+}
+@keyframes led-flash {
+  from { opacity: 0.45; }
+  to { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .led-beam,
+  .led-content,
+  .led-flash {
+    animation: none;
+  }
+  .led-flash {
+    opacity: 0;
+  }
+}
+
+/* Work stats: each number rises in turn and its orange line draws across. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal .stat {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+    transition-delay: calc(var(--i) * 180ms);
+  }
+  .reveal.is-in .stat {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal .stat-bar {
+    transform: scaleX(0);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i) * 180ms + 300ms);
+  }
+  .reveal.is-in .stat-bar {
+    transform: scaleX(1);
+  }
+  .stat:hover .stat-bar {
+    transform: scaleX(1.6);
+    transition-delay: 0ms;
+  }
+}
+
+/* Page heroes: drifting photo/logo strip, popping photos, drawn highlight. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-strip {
+    animation: hero-strip 60s linear infinite;
+  }
+  .hero-strip:hover {
+    animation-play-state: paused;
+  }
+  .hero-pop {
+    animation: brief-pop 600ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .hero-underline {
+    animation: hero-underline 900ms 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+@keyframes hero-strip {
+  to { transform: translateX(-50%); }
+}
+@keyframes hero-underline {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}

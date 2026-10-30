@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import ClientLogos from "@/components/ClientLogos";
 import CtaBand from "@/components/CtaBand";
 import PageHero from "@/components/PageHero";
-import { clients, contractorFor, site, team } from "@/content/site";
+import { site, team } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -22,6 +23,8 @@ export default function AboutPage() {
         title="We engage the power of imagery to make the biggest impact at your event."
         intro="An event production and AV company in Semenyih, Selangor, incorporated in 2005."
         image="/images/work/awards-night.webp"
+        image2="/images/work/camera-crew.webp"
+        badge={{ value: "Since 2005", label: "Incorporated in Selangor" }}
       />
 
       <section className="py-16 lg:py-24">
@@ -85,22 +88,8 @@ export default function AboutPage() {
             <h2 className="mt-3 text-3xl font-bold">Who we've worked with</h2>
           </div>
           <div className="reveal">
-            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {clients.map((c) => (
-                <li key={c} className="grid h-20 place-items-center rounded-2xl bg-ink-950 px-3 text-center text-lg font-bold text-white">
-                  {c}
-                </li>
-              ))}
-            </ul>
-            <p className="eyebrow mt-10 text-muted">Registered contractor with the Sennego system</p>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-              {contractorFor.map((c) => (
-                <li key={c.name} className="rounded-xl border border-line px-4 py-3">
-                  <p className="font-semibold">{c.name}</p>
-                  <p className="text-sm text-muted">{c.full}</p>
-                </li>
-              ))}
-            </ul>
+            <ClientLogos />
+            <p className="mt-6 text-sm text-muted">Registered contractor with the Sennego system for each of the bodies above.</p>
           </div>
         </div>
       </section>

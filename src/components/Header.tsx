@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { nav, services } from "@/content/site";
 import Logo from "./Logo";
@@ -9,6 +10,8 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
+  const pathname = usePathname();
+  const isActive = (href: string) => pathname.startsWith(href);
 
   useEffect(() => {
     const onScroll = () => {
@@ -34,7 +37,10 @@ export default function Header() {
 
         <nav aria-label="Main" className="hidden items-center gap-8 text-sm font-medium lg:flex">
           <div className="group relative">
-            <Link href="/services/" className="flex items-center gap-1 py-7 hover:text-red-brand">
+            <Link
+              href="/services/"
+              className={`flex items-center gap-1 py-7 hover:text-red-brand ${isActive("/services/") ? "text-red-brand" : ""}`}
+            >
               Services
               <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="transition group-hover:rotate-180">
                 <path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
@@ -45,7 +51,7 @@ export default function Header() {
                 {services.map((s) => (
                   <Link
                     key={s.slug}
-                    href={`/services/#${s.slug}`}
+                    href={`/services/${s.slug}/`}
                     className="rounded-xl px-4 py-3 transition hover:bg-mist-50"
                   >
                     <span className="block font-semibold">{s.short}</span>
@@ -56,7 +62,12 @@ export default function Header() {
             </div>
           </div>
           {nav.slice(1).map((n) => (
-            <Link key={n.href} href={n.href} className="hover:text-red-brand">
+            <Link
+              key={n.href}
+              href={n.href}
+              aria-current={isActive(n.href) ? "page" : undefined}
+              className={`hover:text-red-brand ${isActive(n.href) ? "text-red-brand" : ""}`}
+            >
               {n.label}
             </Link>
           ))}
@@ -98,7 +109,7 @@ export default function Header() {
             {services.map((s) => (
               <Link
                 key={s.slug}
-                href={`/services/#${s.slug}`}
+                href={`/services/${s.slug}/`}
                 onClick={() => setOpen(false)}
                 className="border-b border-line py-3 text-lg font-medium"
               >

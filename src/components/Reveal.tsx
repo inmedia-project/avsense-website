@@ -7,7 +7,6 @@ import { useEffect } from "react";
 export default function Reveal() {
   const pathname = usePathname();
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>(".reveal:not(.is-in)");
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -19,8 +18,16 @@ export default function Reveal() {
       },
       { rootMargin: "0px 0px -8% 0px" },
     );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const watch = () => document.querySelectorAll<HTMLElement>(".reveal:not(.is-in)").forEach((el) => io.observe(el));
+    watch();
+    // Elements rendered later (client components, hot reload) need observing too,
+    // otherwise they stay invisible.
+    const mo = new MutationObserver(watch);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+    };
   }, [pathname]);
   return null;
 }

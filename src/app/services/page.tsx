@@ -19,7 +19,8 @@ export default function ServicesPage() {
         eyebrow="Services"
         title="Everything your event needs on stage and on screen."
         intro="Book a single service or let one crew run them all together."
-        image="/images/work/concert-led.webp"
+        variant="strip"
+        images={services.map((s) => s.images[0].src)}
       />
 
       <nav aria-label="Services" className="sticky top-20 z-30 border-b border-line bg-white/95 backdrop-blur">
@@ -41,7 +42,11 @@ export default function ServicesPage() {
               <p className="eyebrow text-red-brand">
                 {String(i + 1).padStart(2, "0")} · {s.eyebrow}
               </p>
-              <h2 className="mt-3 text-3xl font-bold sm:text-4xl">{s.title}</h2>
+              <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+                <Link href={`/services/${s.slug}/`} className="hover:text-red-brand">
+                  {s.title}
+                </Link>
+              </h2>
               {s.body.map((p) => (
                 <p key={p.slice(0, 20)} className="mt-5 leading-relaxed text-muted">
                   {p}
@@ -57,6 +62,9 @@ export default function ServicesPage() {
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <Link href="/contact/" className="btn-primary">
                   Get a quote
+                </Link>
+                <Link href={`/services/${s.slug}/`} className="link-underline text-sm font-semibold">
+                  Full details
                 </Link>
                 <a
                   href={waLink(`Hi AV Sense, I'd like to ask about ${s.short.toLowerCase()}.`)}
