@@ -31,7 +31,8 @@ export default function LedEstimator() {
     <div>
       {/* Stage scene */}
       <div className="reveal relative overflow-hidden rounded-[2rem] bg-ink-950 ring-1 ring-white/10">
-        <div className="relative aspect-[12/7] sm:aspect-[12/6.4]">
+        {/* On phones the scene bleeds past the frame so the stage reads bigger; the outer edges are empty. */}
+        <div className="relative -mx-[9%] aspect-[12/6.4] sm:mx-0">
           {/* Haze glow behind the screen (static, so resizing stays cheap) */}
           <div className="pointer-events-none absolute inset-x-[15%] top-[10%] bottom-[10%] bg-[radial-gradient(closest-side,rgba(247,148,29,.28),transparent)]" />
 
@@ -94,7 +95,7 @@ export default function LedEstimator() {
 
           {/* Person for scale */}
           <div className="absolute flex flex-col items-center" style={{ left: x(1.5), top: y(STAGE_TOP - 1.7 - 0.35), height: y(1.7 + 0.35) }}>
-            <span className="text-[0.55rem] font-semibold text-white/50 sm:text-xs">1.7m</span>
+            <span className="text-[0.65rem] font-semibold text-white/50 sm:text-xs">1.7m</span>
             <svg viewBox="0 0 20 60" className="mt-1 h-full w-auto flex-1 fill-white/40" aria-hidden>
               <circle cx="10" cy="6" r="5.5" />
               <rect x="3.5" y="13" width="13" height="22" rx="4" />
@@ -129,7 +130,7 @@ export default function LedEstimator() {
       </div>
 
       {/* Controls */}
-      <div className="reveal relative z-10 mx-auto -mt-10 grid max-w-6xl gap-10 rounded-[2rem] bg-white p-6 text-text shadow-lift sm:p-10 lg:grid-cols-2">
+      <div className="reveal relative z-10 mx-auto mt-4 grid max-w-6xl gap-10 rounded-[2rem] bg-white p-6 text-text shadow-lift sm:-mt-10 sm:p-10 lg:grid-cols-2">
         <div>
           <p className="eyebrow text-muted">Select a size</p>
           <div className="mt-4 grid grid-cols-2 gap-3">
